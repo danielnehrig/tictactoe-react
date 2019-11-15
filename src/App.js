@@ -1,47 +1,59 @@
 import React, { Component } from 'react'
 import Row from 'src/row'
 import './App.scss'
+import { winning } from 'src/utils'
 
-class App extends React.Component {
-  state = {
-    activePlayer: 1,
-    board: [
+const initState = {
+  activePlayer: 1,
+  errorMsg: '',
+  winner: 0,
+  turns: 0,
+  board: [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ]
+}
+
+class App extends Component {
+  state = initState
+
+  reset = e => {
+    const newBoard = [
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0]
-    ],
-    errorMsg: '',
-    winner: 0,
-    turns: 0
-  }
+    ]
 
-  winner = () => {
-    const { turns, board } = this.state
-    let theWinner = 0
-    // Add Winning Logic
-    // this.setState({ winner: theWinner })
+    this.setState({ board: newBoard, winner: 0 })
   }
 
   handleClick = (x, y, fieldData) => e => {
-    const { board, activePlayer, turns } = this.state
+    const { board, activePlayer, turns, winner } = this.state
     const newPlayer = activePlayer === 1 ? 2 : 1
+
     switch (fieldData) {
       case 0:
-        board[x][y] = activePlayer
-        this.setState({
-          board,
-          activePlayer: newPlayer,
-          errorMsg: '',
-          turns: turns + 1
-        })
+        if (winner === 0) {
+          board[x][y] = activePlayer
+          this.setState({
+            board,
+            activePlayer: newPlayer,
+            errorMsg: '',
+            turns: turns + 1
+          })
+        }
+
+        if (turns > 3) {
+          const win = winning(board)
+          if (win.isWinner) {
+            this.setState({ winner: win.player })
+          }
+        }
         break
       default:
         this.setState({ errorMsg: 'Choose a empty Field' })
         break
-    }
-
-    if (turns > 2) {
-      this.winner()
     }
   }
 
@@ -62,6 +74,7 @@ class App extends React.Component {
         ))}
         <p>{errorMsg && errorMsg}</p>
         <p>{winner !== 0 && `The winner is Player ${winner}`}</p>
+        {winner !== 0 && <button onClick={this.reset}>Reset</button>}
       </div>
     )
   }
