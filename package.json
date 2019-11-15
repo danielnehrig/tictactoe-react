@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --config config/webpack.config.js",
-    "build": "webpack --config config/webpack.config.js"
+    "build": "webpack --config config/webpack.config.js",
+    "test": "NODE_ENV=test APP_ENV=test yarn jest --forceExit --detectOpenHandles --projects src",
+    "lint": "eslint src/**/*.js --config=.eslintrc.js"
   },
   "dependencies": {
     "react": "^16.12.0",
@@ -30,8 +32,11 @@
     "file-loader": "^4.2.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
     "node-sass": "^4.13.0",
     "prettier": "^1.19.1",
+    "react-test-renderer": "^16.12.0",
     "sass": "^1.23.3",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
