@@ -1,6 +1,5 @@
 export const winning = board => {
-  console.log('trigger win func')
-  console.log(board)
+  const size = 3
   // Add Winning Logic
   let winner = 0
   let counter = 0
@@ -8,64 +7,38 @@ export const winning = board => {
 
   // Left to Right Horizontal Check [0][0] [0][1] [0][2]
   for (let i = 0; i < board.length; i++) {
+    init = 0
     for (let k = 0; k < board[i].length; k++) {
-      init = init || board[i][k]
-      if (init === board[i][k]) {
-        counter++
+      const value = board[i][k]
 
-        if (counter === 3) {
-          winner = init
-          break
+      if (value !== 0) {
+        if (init === 0) {
+          init = value
+        }
+
+        if (value === init) {
+          counter++
+
+          if (counter === size) {
+            winner = value
+            console.log('winner left 2 right')
+          }
         }
       } else {
-        init = 0
-        counter = 0
         break
       }
     }
+
+    if (winner !== 0) break
   }
 
   // Diagonal check [0][0] [1][1] [2][2]
-  if (winner === 0) {
-    counter = 0
-    for (let i = 0; i < board.length; i++) {
-      init = init || board[i][i]
-      if (init === board[i][i]) {
-        counter++
-        if (counter === 3) {
-          winner = init
-          break
-        }
-      } else {
-        init = 0
-        counter = 0
-        break
-      }
-    }
-  }
+
+  // Diagonal check reverse [0][2] [1][1] [2][0]
 
   // Top Down Check [0][0] [1][0] [2][0]
   // --- ---- ----- [0][1] [1][1] [2][1]
   // --- ---- ----- [0][2] [1][2] [2][2]
-  if (winner === 0) {
-    for (let i = 0, k = 0; i < board.length; i++) {
-      init = init || board[i][k]
-      if (init === board[i][k]) {
-        counter++
-        if (counter === 3) {
-          winner = init
-          break
-        }
-      } else {
-        init = 0
-        counter = 0
-        k++
-        break
-      }
-
-      if (i === 3) k++
-    }
-  }
 
   const result = {
     isWinner: winner !== 0,

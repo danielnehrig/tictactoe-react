@@ -8,7 +8,10 @@ import {
   horWinLR3,
   topDown,
   topDown2,
-  topDown3
+  topDown3,
+  failCase,
+  failCase2,
+  failCase3
 } from 'src/mocks'
 
 describe('diagonal tests', () => {
@@ -59,5 +62,22 @@ describe('top down tests', () => {
   test('test top down 3', () => {
     const win = winning(topDown3)
     expect(win.isWinner).toBe(true)
+  })
+})
+
+describe('fail case tests', () => {
+  test('fail 1', () => {
+    const win = winning(failCase)
+    expect(win.isWinner).toBe(false)
+  })
+
+  test('fail 2', () => {
+    const win = winning(failCase2)
+    expect(win.isWinner).toBe(false)
+  })
+
+  test('fail 3', () => {
+    const win = winning(failCase3)
+    expect(win.isWinner).toBe(false)
   })
 })
