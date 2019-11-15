@@ -5,7 +5,11 @@ import './App.scss'
 class App extends React.Component {
   state = {
     activePlayer: 1,
-    board: [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+    board: [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ],
     errorMsg: '',
     winner: 0
   }
