@@ -8,6 +8,7 @@ export const winning = board => {
   // Left to Right Horizontal Check [0][0] [0][1] [0][2]
   for (let i = 0; i < board.length; i++) {
     init = 0
+    counter = 0
     for (let k = 0; k < board[i].length; k++) {
       const value = board[i][k]
 
