@@ -1,4 +1,6 @@
 export const winning = board => {
+  console.log('trigger win func')
+  console.log(board)
   // Add Winning Logic
   let winner = 0
   let counter = 0
@@ -7,11 +9,13 @@ export const winning = board => {
   // Left to Right Horizontal Check [0][0] [0][1] [0][2]
   for (let i = 0; i < board.length; i++) {
     for (let k = 0; k < board[i].length; k++) {
-      let init = init || board[i][k]
+      init = init || board[i][k]
       if (init === board[i][k]) {
         counter++
+
         if (counter === 3) {
           winner = init
+          break
         }
       } else {
         init = 0
@@ -22,38 +26,45 @@ export const winning = board => {
   }
 
   // Diagonal check [0][0] [1][1] [2][2]
-  for (let i = 0; i < board.length; i++) {
-    let init = init || board[i][i]
-    if (init === board[i][i]) {
-      counter++
-      if (counter === 3) {
-        winner = init
+  if (winner === 0) {
+    counter = 0
+    for (let i = 0; i < board.length; i++) {
+      init = init || board[i][i]
+      if (init === board[i][i]) {
+        counter++
+        if (counter === 3) {
+          winner = init
+          break
+        }
+      } else {
+        init = 0
+        counter = 0
+        break
       }
-    } else {
-      init = 0
-      counter = 0
-      break
     }
   }
 
   // Top Down Check [0][0] [1][0] [2][0]
   // --- ---- ----- [0][1] [1][1] [2][1]
   // --- ---- ----- [0][2] [1][2] [2][2]
-  for (let i = 0, k = 0; i < board.length; i++) {
-    let init = init || board[i][k]
-    if (init === board[i][k]) {
-      counter++
-      if (counter === 3) {
-        winner = init
+  if (winner === 0) {
+    for (let i = 0, k = 0; i < board.length; i++) {
+      init = init || board[i][k]
+      if (init === board[i][k]) {
+        counter++
+        if (counter === 3) {
+          winner = init
+          break
+        }
+      } else {
+        init = 0
+        counter = 0
+        k++
+        break
       }
-    } else {
-      init = 0
-      counter = 0
-      k++
-      break
-    }
 
-    if (i === 3) k++
+      if (i === 3) k++
+    }
   }
 
   const result = {

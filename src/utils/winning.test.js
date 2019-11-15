@@ -1,69 +1,63 @@
 import { winning } from './winning'
+import {
+  diagWin,
+  diagWin2,
+  diagWin3,
+  horWinLR,
+  horWinLR2,
+  horWinLR3,
+  topDown,
+  topDown2,
+  topDown3
+} from 'src/mocks'
 
-const diagWin = [
-  [1, 0, 0],
-  [2, 1, 0],
-  [0, 2, 1]
-]
+describe('diagonal tests', () => {
+  test('test diag 1', () => {
+    const win = winning(diagWin)
+    expect(win.isWinner).toBe(true)
+  })
 
-const diagWin2 = [
-  [1, 0, 2],
-  [0, 2, 0],
-  [2, 0, 1]
-]
+  test('test diag 2', () => {
+    const win = winning(diagWin2)
+    expect(win.isWinner).toBe(true)
+  })
 
-const horWinLR = [
-  [1, 1, 1],
-  [2, 2, 0],
-  [0, 0, 0]
-]
-
-const horWinLR2 = [
-  [1, 0, 0],
-  [2, 2, 2],
-  [0, 1, 0]
-]
-
-const topDown = [
-  [2, 0, 0],
-  [2, 1, 0],
-  [2, 1, 0]
-]
-
-const topDown2 = [
-  [0, 1, 0],
-  [2, 1, 0],
-  [2, 1, 0]
-]
-
-test('test diag 1', () => {
-  const win = winning(diagWin)
-  expect(win.isWinner).toBe(true)
+  test('test diag 3', () => {
+    const win = winning(diagWin3)
+    expect(win.isWinner).toBe(true)
+  })
 })
 
-// Fail
-test('test diag 2', () => {
-  const win = winning(diagWin2)
-  expect(win.isWinner).toBe(true)
+describe('horizontal tests', () => {
+  test('test hor 1', () => {
+    const win = winning(horWinLR)
+    expect(win.isWinner).toBe(true)
+  })
+
+  test('test hor 2', () => {
+    const win = winning(horWinLR2)
+    expect(win.isWinner).toBe(true)
+  })
+
+  test('test hor 3', () => {
+    const win = winning(horWinLR2)
+    expect(win.isWinner).toBe(true)
+  })
 })
 
-// Fail
-test('test hor 1', () => {
-  const win = winning(horWinLR)
-  expect(win.isWinner).toBe(true)
-})
+describe('top down tests', () => {
+  test('test top down 1', () => {
+    const win = winning(topDown)
+    expect(win.isWinner).toBe(true)
+  })
 
-test('test hor 2', () => {
-  const win = winning(horWinLR2)
-  expect(win.isWinner).toBe(true)
-})
+  test('test top down 2', () => {
+    const win = winning(topDown2)
+    expect(win.isWinner).toBe(true)
+  })
 
-test('test top down 1', () => {
-  const win = winning(topDown)
-  expect(win.isWinner).toBe(true)
-})
-
-test('test top down 2', () => {
-  const win = winning(topDown2)
-  expect(win.isWinner).toBe(true)
+  test('test top down 3', () => {
+    const win = winning(topDown3)
+    expect(win.isWinner).toBe(true)
+  })
 })

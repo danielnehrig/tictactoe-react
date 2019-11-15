@@ -25,7 +25,7 @@ class App extends Component {
       [0, 0, 0]
     ]
 
-    this.setState({ board: newBoard, winner: 0 })
+    this.setState({ board: newBoard, winner: 0, turns: 0, activePlayer: 1 })
   }
 
   handleClick = (x, y, fieldData) => e => {
