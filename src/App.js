@@ -11,23 +11,47 @@ class App extends React.Component {
       [0, 0, 0]
     ],
     errorMsg: '',
-    winner: 0
+    winner: 0,
+    turns: 0
   }
 
   winner = () => {
-    console.log('winner logic')
+    const { turns, board } = this.state
+    let theWinner = 0
+    // Add Winning Logic
+    // this.setState({ winner: theWinner })
   }
 
   handleClick = (x, y, fieldData) => e => {
-    console.log('clicked')
+    const { board, activePlayer, turns } = this.state
+    const newPlayer = activePlayer === 1 ? 2 : 1
+    switch (fieldData) {
+      case 0:
+        board[x][y] = activePlayer
+        this.setState({
+          board,
+          activePlayer: newPlayer,
+          errorMsg: '',
+          turns: turns + 1
+        })
+        break
+      default:
+        this.setState({ errorMsg: 'Choose a empty Field' })
+        break
+    }
+
+    if (turns > 2) {
+      this.winner()
+    }
   }
 
   render() {
-    const { board, errorMsg, winner, activePlayer } = this.state
+    const { board, errorMsg, winner, activePlayer, turns } = this.state
 
     return (
       <div className="App">
-        {`Player ${activePlayer} Turn`}
+        <p>{`Current turn ${turns}`}</p>
+        <p>{`Player ${activePlayer} Turn`}</p>
         {board.map((el, idx) => (
           <Row
             key={`${idx}`}
@@ -36,8 +60,8 @@ class App extends React.Component {
             handleClick={this.handleClick}
           />
         ))}
-        {errorMsg && errorMsg}
-        {winner !== 0 && `The winner is ${winner}`}
+        <p>{errorMsg && errorMsg}</p>
+        <p>{winner !== 0 && `The winner is Player ${winner}`}</p>
       </div>
     )
   }
