@@ -25,7 +25,13 @@ class App extends Component {
       [0, 0, 0]
     ]
 
-    this.setState({ board: newBoard, winner: 0, turns: 0, activePlayer: 1 })
+    this.setState({
+      board: newBoard,
+      winner: 0,
+      turns: 0,
+      activePlayer: 1,
+      errorMsg: ''
+    })
   }
 
   handleClick = (x, y, fieldData) => e => {
@@ -49,6 +55,10 @@ class App extends Component {
           if (win.isWinner) {
             this.setState({ winner: win.player })
           }
+        }
+
+        if (turns === 8) {
+          this.setState({ errorMsg: 'draw' })
         }
         break
       default:
@@ -75,6 +85,7 @@ class App extends Component {
         <p>{errorMsg && errorMsg}</p>
         <p>{winner !== 0 && `The winner is Player ${winner}`}</p>
         {winner !== 0 && <button onClick={this.reset}>Reset</button>}
+        {errorMsg === 'draw' && <button onClick={this.reset}>Reset</button>}
       </div>
     )
   }
