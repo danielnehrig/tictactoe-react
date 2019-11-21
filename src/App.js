@@ -55,11 +55,12 @@ class App extends Component {
           if (win.isWinner) {
             this.setState({ winner: win.player })
           }
+
+          if (turns === 8 && !win.isWinner) {
+            this.setState({ errorMsg: 'draw' })
+          }
         }
 
-        if (turns === 8) {
-          this.setState({ errorMsg: 'draw' })
-        }
         break
       default:
         this.setState({ errorMsg: 'Choose a empty Field' })
