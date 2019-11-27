@@ -97,7 +97,6 @@ export const winning = board => {
       init = 0
       for (let k = 0; k < board.length; k++) {
         const value = board[k][i]
-        console.log(`[${k}][${i}] = ${value}`)
 
         if (value !== 0) {
           if (init === 0) {

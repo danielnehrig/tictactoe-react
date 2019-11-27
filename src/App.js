@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import io from 'socket.io-client'
 import Row from 'src/row'
 import './App.scss'
 import { winning } from 'src/utils'
@@ -17,6 +18,7 @@ const initState = {
 
 class App extends Component {
   state = initState
+  socket = null
 
   reset = e => {
     const newBoard = [
@@ -25,12 +27,41 @@ class App extends Component {
       [0, 0, 0]
     ]
 
-    this.setState({
-      board: newBoard,
-      winner: 0,
-      turns: 0,
-      activePlayer: 1,
-      errorMsg: ''
+    this.socket.emit('reset', newBoard)
+  }
+
+  componentWillMount() {
+    this.socket = io('ws://localhost:3001')
+
+    this.socket.on('reset', board => {
+      this.setState({
+        board,
+        winner: 0,
+        turns: 0,
+        activePlayer: 1,
+        errorMsg: ''
+      })
+    })
+
+    this.socket.on('winLogic', winner => {
+      console.log(winner)
+      this.setState({ winner: winner })
+    })
+
+    this.socket.on('errorMsg', draw => {
+      console.log(draw)
+      this.setState({ errorMsg: draw })
+    })
+
+    this.socket.on('placed', ({ activePlayer, board, turns }) => {
+      const newPlayer = activePlayer === 1 ? 2 : 1
+
+      this.setState({
+        board,
+        activePlayer: newPlayer,
+        errorMsg: '',
+        turns: turns + 1
+      })
     })
   }
 
@@ -42,22 +73,28 @@ class App extends Component {
       case 0:
         if (winner === 0) {
           board[x][y] = activePlayer
-          this.setState({
+          const socketData = {
+            x,
+            y,
+            fieldData,
             board,
-            activePlayer: newPlayer,
-            errorMsg: '',
-            turns: turns + 1
-          })
+            turns,
+            activePlayer
+          }
+
+          this.socket.emit('placed', socketData)
         }
 
         if (turns > 3) {
           const win = winning(board)
           if (win.isWinner) {
-            this.setState({ winner: win.player })
+            this.socket.emit('winLogic', win.player)
+            // this.setState({ winner: win.player })
           }
 
           if (turns === 8 && !win.isWinner) {
-            this.setState({ errorMsg: 'draw' })
+            this.socket.emit('errorMsg', 'draw')
+            // this.setState({ errorMsg: 'draw' })
           }
         }
 
