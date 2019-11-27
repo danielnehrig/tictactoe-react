@@ -2,8 +2,8 @@ var app = require('express')()
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
 
-app.get('/move', (req, res) => {
-  res.send('<h1>Hello world</h1>')
+app.get('/', (req, res) => {
+  res.send('<h1>Socket Server</h1>')
 })
 
 io.on('connection', socket => {
