@@ -18,7 +18,7 @@ const initState = {
 
 class App extends Component {
   state = initState
-  socket = null
+  socket = io('ws://localhost:3001')
 
   reset = e => {
     const newBoard = [
@@ -31,8 +31,6 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.socket = io('ws://localhost:3001')
-
     this.socket.on('reset', board => {
       this.setState({
         board,
@@ -108,24 +106,28 @@ class App extends Component {
   render() {
     const { board, errorMsg, winner, activePlayer, turns } = this.state
 
-    return (
-      <div className="App">
-        <p>{`Current turn ${turns}`}</p>
-        <p>{`Player ${activePlayer} Turn`}</p>
-        {board.map((el, idx) => (
-          <Row
-            key={`${idx}`}
-            x={idx}
-            rowData={el}
-            handleClick={this.handleClick}
-          />
-        ))}
-        <p>{errorMsg && errorMsg}</p>
-        <p>{winner !== 0 && `The winner is Player ${winner}`}</p>
-        {winner !== 0 && <button onClick={this.reset}>Reset</button>}
-        {errorMsg === 'draw' && <button onClick={this.reset}>Reset</button>}
-      </div>
-    )
+    if (this.socket) {
+      return (
+        <div className="App">
+          <p>{`Current turn ${turns}`}</p>
+          <p>{`Player ${activePlayer} Turn`}</p>
+          {board.map((el, idx) => (
+            <Row
+              key={`${idx}`}
+              x={idx}
+              rowData={el}
+              handleClick={this.handleClick}
+            />
+          ))}
+          <p>{errorMsg && errorMsg}</p>
+          <p>{winner !== 0 && `The winner is Player ${winner}`}</p>
+          {winner !== 0 && <button onClick={this.reset}>Reset</button>}
+          {errorMsg === 'draw' && <button onClick={this.reset}>Reset</button>}
+        </div>
+      )
+    } else {
+      return <h1>woot</h1>
+    }
   }
 }
 
